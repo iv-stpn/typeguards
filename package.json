@@ -51,6 +51,26 @@
         "default": "./dist/is-non-null-object.cjs"
       }
     },
+    "./is-null": {
+      "import": {
+        "types": "./dist/is-null.d.ts",
+        "default": "./dist/is-null.js"
+      },
+      "require": {
+        "types": "./dist/is-null.d.cts",
+        "default": "./dist/is-null.cjs"
+      }
+    },
+    "./is-undefined": {
+      "import": {
+        "types": "./dist/is-undefined.d.ts",
+        "default": "./dist/is-undefined.js"
+      },
+      "require": {
+        "types": "./dist/is-undefined.d.cts",
+        "default": "./dist/is-undefined.cjs"
+      }
+    },
     "./is-string": {
       "import": {
         "types": "./dist/is-string.d.ts",
@@ -79,6 +99,16 @@
       "require": {
         "types": "./dist/is-boolean.d.cts",
         "default": "./dist/is-boolean.cjs"
+      }
+    },
+    "./is-function": {
+      "import": {
+        "types": "./dist/is-function.d.ts",
+        "default": "./dist/is-function.js"
+      },
+      "require": {
+        "types": "./dist/is-function.d.cts",
+        "default": "./dist/is-function.cjs"
       }
     },
     "./has-key": {

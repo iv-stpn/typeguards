@@ -6,5 +6,10 @@ export type ApiErrorResponse = { error: string; code?: string; requestId?: strin
 
 /** Narrows an unknown value to {@link ApiErrorResponse} with a real runtime check. */
 export function isApiErrorResponse(value: unknown): value is ApiErrorResponse {
-  return isObject(value) && isString(value.error) && (value.code === undefined || isString(value.code));
+  return (
+    isObject(value) &&
+    isString(value.error) &&
+    (value.code === undefined || isString(value.code)) &&
+    (value.requestId === undefined || isString(value.requestId))
+  );
 }

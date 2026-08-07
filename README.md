@@ -46,9 +46,12 @@ function first(raw: unknown): unknown {
 | --- | --- | --- |
 | `typeguards/is-object` | `Record<string, unknown>` | non-null, non-array object |
 | `typeguards/is-non-null-object` | `Record<string, unknown>` | any non-null object (arrays included) |
+| `typeguards/is-null` | `null` | `value === null` |
+| `typeguards/is-undefined` | `undefined` | `value === undefined` |
 | `typeguards/is-string` | `string` | `typeof === 'string'` |
 | `typeguards/is-number` | `number` | `typeof === 'number'` and not `NaN` |
 | `typeguards/is-boolean` | `boolean` | `typeof === 'boolean'` |
+| `typeguards/is-function` | `(...args: never[]) => unknown` | `typeof === 'function'` |
 | `typeguards/is-array` | `T[]` | `Array.isArray` |
 | `typeguards/is-non-empty-array` | `[T, ...T[]]` | array with at least one element |
 | `typeguards/is-empty-array` | `[]` | array with no elements |
@@ -64,9 +67,12 @@ take already-typed inputs) and are safe to use on parsed JSON.
 
 - `isObject(value)` — `value is Record<string, unknown>`
 - `isNonNullObject(value)` — `value is Record<string, unknown>`
+- `isNull(value)` — `value is null`
+- `isUndefined(value)` — `value is undefined`
 - `isString(value)` — `value is string`
 - `isNumber(value)` — `value is number`
 - `isBoolean(value)` — `value is boolean`
+- `isFunction(value)` — `value is (...args: never[]) => unknown`
 - `isArray<T = unknown>(value)` — `value is T[]`
 - `isNonEmptyArray<T = unknown>(value)` — `value is [T, ...T[]]`
 - `isEmptyArray(value: unknown[])` — `value is []`

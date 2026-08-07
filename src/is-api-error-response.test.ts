@@ -17,5 +17,6 @@ describe('isApiErrorResponse', () => {
     expect(isApiErrorResponse({})).toBe(false);
     expect(isApiErrorResponse({ error: 42 })).toBe(false);
     expect(isApiErrorResponse({ error: 'boom', code: 42 })).toBe(false);
+    expect(isApiErrorResponse({ error: 'boom', requestId: 42 })).toBe(false);
   });
 });
