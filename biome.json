@@ -1,0 +1,7 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["@iv-stpn/biome-config/biome"],
+  "files": {
+    "includes": ["!dist", "!node_modules"]
+  }
+}
