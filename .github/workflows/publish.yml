@@ -1,0 +1,100 @@
+name: Publish
+
+# Publishes the package to the npm registry when a version tag is pushed or a
+# GitHub release is created. Idempotent: if the tagged version is already on the
+# registry, the publish step is skipped (safe to re-run).
+#
+# ── Required repository secret ──────────────────────────────────────────────
+#   NPM_TOKEN  an npm **Automation** token (npmjs.com → Access Tokens →
+#              Generate New Token, type "Automation"). A plain publish token
+#              will fail with EOTP because the npm account has 2FA enabled.
+#              Configure it at:
+#              https://github.com/iv-stpn/typeguards/settings/secrets/actions
+#
+# ── Release triggers ────────────────────────────────────────────────────────
+#   1. Push a version tag matching package.json:
+#        git tag v0.1.0 && git push origin v0.1.0
+#   2. Or create a GitHub release (New release → choose tag v0.1.0).
+#      The tag MUST equal the version in package.json — the "chore: version
+#      packages" PR (opened by version.yml) bumps it; merge that PR, then tag.
+#
+# ── Flow ────────────────────────────────────────────────────────────────────
+#   checkout → install → lint → typecheck → build → test → publish.
+#   Publish only runs if all gates pass and the version isn't published yet.
+
+on:
+  push:
+    tags:
+      - "v*"
+  release:
+    types: [created]
+
+permissions:
+  contents: read
+  id-token: write # npm provenance (publishConfig.provenance: true)
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Gate & publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node (npm registry auth)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Gates — publish only happens if all of these pass.
+      - name: Lint
+        run: bun run lint
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Build
+        run: bun run build
+
+      - name: Test
+        run: bun run test
+
+      - name: Validate tag matches package.json version
+        id: version
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag '${GITHUB_REF_NAME}' does not match package.json version '${PKG_VERSION}'. Merge the changesets 'chore: version packages' PR first, then retag."
+            exit 1
+          fi
+          echo "version=${PKG_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if version already published
+        id: check
+        run: |
+          if npm view "typeguards@${{ steps.version.outputs.version }}" version >/dev/null 2>&1; then
+            echo "already-published=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${{ steps.version.outputs.version }} is already on the npm registry — skipping publish."
+          else
+            echo "already-published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm
+        if: steps.check.outputs.already-published == 'false'
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

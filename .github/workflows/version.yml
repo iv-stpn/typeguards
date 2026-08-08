@@ -1,20 +1,25 @@
-name: Release
+name: Version Packages
+
+# Opens / updates the "chore: version packages" PR whenever changesets are
+# present on main. Merging that PR bumps the version in package.json and
+# generates the changelog. It does NOT publish — publishing happens in
+# publish.yml, which runs when a v* tag is pushed or a GitHub release is
+# created (see .github/workflows/publish.yml for the release procedure).
 
 on:
   push:
     branches: [main]
 
-concurrency:
-  group: release-${{ github.workflow }}-${{ github.ref }}
-
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
+
+concurrency:
+  group: version-${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
-    name: Release
+  version:
+    name: Version packages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,24 +30,14 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Setup Node (for npm registry auth)
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: "https://registry.npmjs.org"
-
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Create Release PR or Publish
+      - name: Create / update version PR
         uses: changesets/action@v1
         with:
           version: bun run version-packages
-          publish: bun run release
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
