@@ -83,21 +83,24 @@ function cmdBadge(): void {
   const { pct } = readSummary();
   const badge = `[![Coverage](https://img.shields.io/badge/coverage-${formatPct(pct)}%25-${colorFor(pct)})](${CI_URL})`;
   const readme = readFileSync(README_PATH, 'utf8');
-  let next: string;
   if (BADGE_PATTERN.test(readme)) {
-    next = readme.replace(BADGE_PATTERN, badge);
-  } else if (readme.includes('## Install')) {
-    next = readme.replace('## Install', `${badge}\n\n## Install`);
-  } else {
-    console.error(`Could not update ${README_PATH}: no existing badge and no "## Install" anchor found.`);
-    exit(1);
-  }
-  if (next === readme) {
-    console.log(`README badge up to date: ${badge}`);
+    const updated = readme.replace(BADGE_PATTERN, badge);
+    if (updated === readme) {
+      console.log(`README badge up to date: ${badge}`);
+      return;
+    }
+    writeFileSync(README_PATH, updated);
+    console.log(`README badge updated: ${badge}`);
     return;
   }
-  writeFileSync(README_PATH, next);
-  console.log(`README badge updated: ${badge}`);
+  if (readme.includes('## Install')) {
+    const updated = readme.replace('## Install', `${badge}\n\n## Install`);
+    writeFileSync(README_PATH, updated);
+    console.log(`README badge updated: ${badge}`);
+    return;
+  }
+  console.error(`Could not update ${README_PATH}: no existing badge and no "## Install" anchor found.`);
+  exit(1);
 }
 
 const [command, ...rest] = process.argv.slice(2);
