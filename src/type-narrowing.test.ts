@@ -9,6 +9,7 @@ import {
   hasKey,
   isApiErrorResponse,
   isArray,
+  isArrayOf,
   isBoolean,
   isEmptyArray,
   isFunction,
@@ -18,8 +19,10 @@ import {
   isNull,
   isNumber,
   isObject,
+  isObjectOf,
   isString,
   isUndefined,
+  isUnionOf,
 } from './index';
 
 describe('type-level narrowing', () => {
@@ -126,5 +129,54 @@ describe('type-level narrowing', () => {
     assertDefined(value);
     const narrowed: string = value;
     expect(narrowed).toBe('defined');
+  });
+});
+
+describe('type-level narrowing of composite guards', () => {
+  test('isArrayOf narrows to T[]', () => {
+    const value: unknown = [1, 2];
+    if (isArrayOf(value, isNumber)) {
+      const narrowed: number[] = value;
+      expect(narrowed).toHaveLength(2);
+    }
+  });
+
+  test('isObjectOf narrows to the shaped object type', () => {
+    const value: unknown = { a: 1 };
+    if (isObjectOf(value, { a: isNumber })) {
+      const narrowed: { a: number } = value;
+      expect(narrowed.a).toBe(1);
+    }
+  });
+
+  test('isUnionOf narrows to the union of guarded types', () => {
+    const value: unknown = 'x';
+    if (isUnionOf(value, isString, isNumber)) {
+      const narrowed: string | number = value;
+      expect(narrowed).toBe('x');
+    }
+  });
+
+  test('composite guards narrow exactly, not to any or unknown', () => {
+    const arrayValue: unknown = [1];
+    if (isArrayOf(arrayValue, isNumber)) {
+      // @ts-expect-error isArrayOf<number> narrows to number[], not string[]
+      const notStringArray: string[] = arrayValue;
+      expect(notStringArray).toBeDefined();
+    }
+
+    const objectValue: unknown = { a: 1 };
+    if (isObjectOf(objectValue, { a: isNumber })) {
+      // @ts-expect-error isObjectOf narrows to { a: number }, not { a: string }
+      const notStringShape: { a: string } = objectValue;
+      expect(notStringShape).toBeDefined();
+    }
+
+    const unionValue: unknown = 1;
+    if (isUnionOf(unionValue, isString, isNumber)) {
+      // @ts-expect-error isUnionOf narrows to string | number, not boolean
+      const notBoolean: boolean = unionValue;
+      expect(notBoolean).toBeDefined();
+    }
   });
 });
