@@ -16,7 +16,7 @@ both from the package root and as a standalone subpath (`typeguards/is-string`, 
 
 > **ApiErrorResponse** = `object`
 
-Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-api-error-response.ts#L8)
+Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/main/src/is-api-error-response.ts#L8)
 
 Correlation id echoed from the `x-request-id` response header, so a bug report ties back to
 server logs.
@@ -27,19 +27,19 @@ server logs.
 
 > **error**: `string`
 
-Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-api-error-response.ts#L8)
+Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/main/src/is-api-error-response.ts#L8)
 
 ##### code?
 
 > `optional` **code?**: `string`
 
-Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-api-error-response.ts#L8)
+Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/main/src/is-api-error-response.ts#L8)
 
 ##### requestId?
 
 > `optional` **requestId?**: `string`
 
-Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-api-error-response.ts#L8)
+Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/blob/main/src/is-api-error-response.ts#L8)
 
 ## Functions
 
@@ -47,7 +47,7 @@ Defined in: [is-api-error-response.ts:8](https://github.com/iv-stpn/typeguards/b
 
 > **assertDefined**\<`T`\>(`value`, `message?`): `asserts value is NonNullable<T>`
 
-Defined in: [assert-defined.ts:11](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/assert-defined.ts#L11)
+Defined in: [assert-defined.ts:11](https://github.com/iv-stpn/typeguards/blob/main/src/assert-defined.ts#L11)
 
 Asserts that a value is neither `null` nor `undefined`, narrowing its type accordingly.
 Throws an `Error` with the given message (or a default) when the assertion fails.
@@ -90,7 +90,7 @@ When `value` is `null` or `undefined`.
 
 > **hasKey**\<`K`\>(`key`, `obj`): `obj is Record<K, unknown>`
 
-Defined in: [has-key.ts:13](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/has-key.ts#L13)
+Defined in: [has-key.ts:13](https://github.com/iv-stpn/typeguards/blob/main/src/has-key.ts#L13)
 
 Narrows a union to the member(s) that declare `key` — a type-guard replacement for the `in`
 operator's discriminated-union narrowing. Returns `true` only when `key` is an own property of
@@ -132,7 +132,7 @@ The value to inspect.
 
 > **isApiErrorResponse**(`value`): `value is ApiErrorResponse`
 
-Defined in: [is-api-error-response.ts:17](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-api-error-response.ts#L17)
+Defined in: [is-api-error-response.ts:17](https://github.com/iv-stpn/typeguards/blob/main/src/is-api-error-response.ts#L17)
 
 Narrows an unknown value to [ApiErrorResponse](#apierrorresponse) with a real runtime check.
 
@@ -157,7 +157,7 @@ The value to check.
 
 > **isArrayOf**\<`T`\>(`value`, `itemGuard`): `value is T[]`
 
-Defined in: [is-array-of.ts:13](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-array-of.ts#L13)
+Defined in: [is-array-of.ts:13](https://github.com/iv-stpn/typeguards/blob/main/src/is-array-of.ts#L13)
 
 Narrows `unknown` to an array whose elements all pass `itemGuard` — a type-guard replacement
 for `Array.prototype.every` that also rejects sparse arrays (holes are treated as failures).
@@ -199,7 +199,7 @@ A type guard applied to every element of `value`.
 
 > **isArray**\<`T`\>(`value`): `value is T[]`
 
-Defined in: [is-array.ts:9](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-array.ts#L9)
+Defined in: [is-array.ts:9](https://github.com/iv-stpn/typeguards/blob/main/src/is-array.ts#L9)
 
 Narrows `unknown` to an array. A type-guard replacement for `Array.isArray` that exposes the
 element type for further probing at trust boundaries (parsed JSON, webhook payloads).
@@ -232,7 +232,7 @@ The value to check.
 
 > **isBoolean**(`value`): `value is boolean`
 
-Defined in: [is-boolean.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-boolean.ts#L7)
+Defined in: [is-boolean.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-boolean.ts#L7)
 
 Narrows an unknown value to a `boolean`.
 
@@ -256,7 +256,7 @@ The value to check.
 
 > **isEmptyArray**(`value`): `value is []`
 
-Defined in: [is-empty-array.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-empty-array.ts#L7)
+Defined in: [is-empty-array.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-empty-array.ts#L7)
 
 Narrows `unknown[]` to the empty tuple type `[]`.
 
@@ -280,7 +280,7 @@ The array to check.
 
 > **isFunction**(`value`): `value is (args: never[]) => unknown`
 
-Defined in: [is-function.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-function.ts#L7)
+Defined in: [is-function.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-function.ts#L7)
 
 Narrows `unknown` to any function value, including class constructors and callable objects.
 
@@ -304,7 +304,7 @@ The value to check.
 
 > **isInArray**\<`T`\>(`array`, `value`): `value is T`
 
-Defined in: [is-in-array.ts:10](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-in-array.ts#L10)
+Defined in: [is-in-array.ts:10](https://github.com/iv-stpn/typeguards/blob/main/src/is-in-array.ts#L10)
 
 Returns `true` when `array` contains `value`, narrowing `value` to the array's element type.
 A type-guard replacement for `Array.prototype.includes` that narrows the checked value.
@@ -343,7 +343,7 @@ The value to look for.
 
 > **isNonEmptyArray**\<`T`\>(`value`): `value is [T, ...T[]]`
 
-Defined in: [is-non-empty-array.ts:10](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-non-empty-array.ts#L10)
+Defined in: [is-non-empty-array.ts:10](https://github.com/iv-stpn/typeguards/blob/main/src/is-non-empty-array.ts#L10)
 
 Narrows `unknown` to a non-empty array. Useful after `isArray` when downstream code assumes at
 least one element (e.g. indexing `[0]`) and wants the compiler to enforce that assumption.
@@ -377,7 +377,7 @@ The value to check.
 
 > **isNonNullObject**(`value`): `value is Record<string, unknown>`
 
-Defined in: [is-non-null-object.ts:8](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-non-null-object.ts#L8)
+Defined in: [is-non-null-object.ts:8](https://github.com/iv-stpn/typeguards/blob/main/src/is-non-null-object.ts#L8)
 
 Narrows `unknown` to any non-null `object` (arrays included), exposing string-keyed properties
 for probing. Mirrors `typeof value === 'object' && value !== null`.
@@ -402,7 +402,7 @@ The value to check.
 
 > **isNull**(`value`): `value is null`
 
-Defined in: [is-null.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-null.ts#L7)
+Defined in: [is-null.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-null.ts#L7)
 
 Narrows an unknown value to `null`.
 
@@ -426,7 +426,7 @@ The value to check.
 
 > **isNumber**(`value`): `value is number`
 
-Defined in: [is-number.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-number.ts#L7)
+Defined in: [is-number.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-number.ts#L7)
 
 Narrows an unknown value to a `number`, excluding `NaN`.
 
@@ -450,7 +450,7 @@ The value to check.
 
 > **isObjectOf**\<`T`\>(`value`, `shape`): `value is T`
 
-Defined in: [is-object-of.ts:17](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-object-of.ts#L17)
+Defined in: [is-object-of.ts:17](https://github.com/iv-stpn/typeguards/blob/main/src/is-object-of.ts#L17)
 
 Narrows `unknown` to an object whose own properties each pass the corresponding guard in
 `shape` — a declarative per-key schema check for trust boundaries. Extra keys are allowed;
@@ -494,7 +494,7 @@ A per-key schema of type guards; every key in `shape` must be an own property of
 
 > **isObject**(`value`): `value is Record<string, unknown>`
 
-Defined in: [is-object.ts:9](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-object.ts#L9)
+Defined in: [is-object.ts:9](https://github.com/iv-stpn/typeguards/blob/main/src/is-object.ts#L9)
 
 Narrows `unknown` to a non-null, non-array object. Excludes arrays, so use it when you
 specifically don't want array values.
@@ -520,7 +520,7 @@ The value to check.
 
 > **isString**(`value`): `value is string`
 
-Defined in: [is-string.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-string.ts#L7)
+Defined in: [is-string.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-string.ts#L7)
 
 Narrows an unknown value to a `string`.
 
@@ -544,7 +544,7 @@ The value to check.
 
 > **isUndefined**(`value`): `value is undefined`
 
-Defined in: [is-undefined.ts:7](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-undefined.ts#L7)
+Defined in: [is-undefined.ts:7](https://github.com/iv-stpn/typeguards/blob/main/src/is-undefined.ts#L7)
 
 Narrows an unknown value to `undefined`.
 
@@ -568,7 +568,7 @@ The value to check.
 
 > **isUnionOf**\<`T`\>(`value`, ...`guards`): `value is T[number]`
 
-Defined in: [is-union-of.ts:12](https://github.com/iv-stpn/typeguards/blob/515aa7fce5e9b5bdfd8d5589ef26a6948d3b4f1d/src/is-union-of.ts#L12)
+Defined in: [is-union-of.ts:12](https://github.com/iv-stpn/typeguards/blob/main/src/is-union-of.ts#L12)
 
 Narrows `unknown` to the union of the types guarded by `guards` — true when at least one guard
 passes (first match wins). Each guard narrows independently, so the result type is their union.

@@ -11,6 +11,7 @@
   "excludeInternal": true,
   "hideGenerator": true,
   "includeVersion": true,
+  "gitRevision": "main",
   "githubPages": false,
   "sort": ["source-order"]
 }
