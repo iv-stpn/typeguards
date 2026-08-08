@@ -1,12 +1,25 @@
 # typeguards
 
+[![CI](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml/badge.svg)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml) [![Coverage](https://img.shields.io/badge/coverage-100%25-2ea44f)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml) [![npm version](https://img.shields.io/npm/v/typeguards)](https://www.npmjs.com/package/typeguards)
+
 Zero-dependency runtime type guards for TypeScript. Narrow `unknown` values at
 trust boundaries — parsed JSON, webhook payloads, API responses, storage reads.
 
+```ts
+import { isObjectOf, isString, isNumber } from 'typeguards';
+
+function parseUser(raw: unknown) {
+  // `raw` could be anything — prove it before you trust it
+  if (!isObjectOf(raw, { name: isString, age: isNumber })) {
+    throw new Error('malformed user payload');
+  }
+  // raw is now narrowed to { name: string; age: number } — safe property access
+  return `${raw.name} (${raw.age})`;
+}
+```
+
 Each guard lives in its **own file and its own package export**, so bundlers
 only ship the guards you actually import.
-
-[![Coverage](https://img.shields.io/badge/coverage-100%25-2ea44f)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml)
 
 ## Install
 
@@ -68,27 +81,6 @@ function first(raw: unknown): unknown {
 All guards accept `unknown` (except `isEmptyArray`/`isInArray`/`hasKey`, which
 take already-typed inputs) and are safe to use on parsed JSON.
 
-## API
-
-- `isObject(value)` — `value is Record<string, unknown>`
-- `isObjectOf<T extends Record<string, unknown>>(value, shape)` — `value is T` when every own property passes its guard in `shape`
-- `isNonNullObject(value)` — `value is Record<string, unknown>`
-- `isNull(value)` — `value is null`
-- `isUndefined(value)` — `value is undefined`
-- `isUnionOf<T extends readonly unknown[]>(value, ...guards)` — `value is T[number]` when any guard passes
-- `isString(value)` — `value is string`
-- `isNumber(value)` — `value is number`
-- `isBoolean(value)` — `value is boolean`
-- `isFunction(value)` — `value is (...args: never[]) => unknown`
-- `isArray<T = unknown>(value)` — `value is T[]`
-- `isArrayOf<T>(value, itemGuard)` — `value is T[]` when every element passes `itemGuard`
-- `isNonEmptyArray<T = unknown>(value)` — `value is [T, ...T[]]`
-- `isEmptyArray(value: unknown[])` — `value is []`
-- `isInArray<T>(array: readonly T[], value)` — `value is T`
-- `hasKey<K extends PropertyKey>(key: K, value)` — `value is Record<K, unknown>`
-- `isApiErrorResponse(value)` — `value is ApiErrorResponse`
-- `assertDefined<T>(value, message?)` — `asserts value is NonNullable<T>`
-
 ## Development
 
 ```bash
@@ -109,6 +101,29 @@ after meaningful test changes. The coverage gate lives only in CI
 Releasing uses [changesets](https://github.com/changesets/changesets): run
 `bun run changeset`, commit the generated file, and the `Release` workflow
 creates a version PR; merging it publishes to npm.
+
+## API
+
+Full API reference: [docs/api.md](docs/api.md).
+
+- `isObject(value)` — `value is Record<string, unknown>`
+- `isObjectOf<T extends Record<string, unknown>>(value, shape)` — `value is T` when every own property passes its guard in `shape`
+- `isNonNullObject(value)` — `value is Record<string, unknown>`
+- `isNull(value)` — `value is null`
+- `isUndefined(value)` — `value is undefined`
+- `isUnionOf<T extends readonly unknown[]>(value, ...guards)` — `value is T[number]` when any guard passes
+- `isString(value)` — `value is string`
+- `isNumber(value)` — `value is number`
+- `isBoolean(value)` — `value is boolean`
+- `isFunction(value)` — `value is (...args: never[]) => unknown`
+- `isArray<T = unknown>(value)` — `value is T[]`
+- `isArrayOf<T>(value, itemGuard)` — `value is T[]` when every element passes `itemGuard`
+- `isNonEmptyArray<T = unknown>(value)` — `value is [T, ...T[]]`
+- `isEmptyArray(value: unknown[])` — `value is []`
+- `isInArray<T>(array: readonly T[], value)` — `value is T`
+- `hasKey<K extends PropertyKey>(key: K, value)` — `value is Record<K, unknown>`
+- `isApiErrorResponse(value)` — `value is ApiErrorResponse`
+- `assertDefined<T>(value, message?)` — `asserts value is NonNullable<T>`
 
 ## License
 
