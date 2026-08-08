@@ -2,6 +2,12 @@
  * Narrows `unknown` to the union of the types guarded by `guards` — true when at least one guard
  * passes (first match wins). Each guard narrows independently, so the result type is their union.
  * An empty guard list never matches.
+ *
+ * @typeParam T - A tuple of the types narrowed by each guard; the result type is `T[number]`.
+ * @param value - The value to check.
+ * @param guards - One or more type guards; the value passes when any guard passes.
+ * @returns `true` when at least one guard in `guards` passes for `value`; narrows `value` to the
+ *   union of the guards' types.
  */
 export function isUnionOf<T extends readonly unknown[]>(
   value: unknown,

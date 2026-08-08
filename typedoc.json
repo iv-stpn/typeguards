@@ -1,0 +1,16 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "plugin": ["typedoc-plugin-markdown"],
+  "out": "docs",
+  "entryFileName": "api",
+  "outputFileStrategy": "modules",
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "hideGenerator": true,
+  "includeVersion": true,
+  "githubPages": false,
+  "sort": ["source-order"]
+}
