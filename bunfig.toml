@@ -1,0 +1,12 @@
+[test]
+# Emit V8 coverage on every `bun test` run: text summary on stdout plus an
+# lcov report at coverage/lcov.info (ignored by git).
+#
+# No coverageThreshold here: bun 1.3.x accepts coverageThreshold (bunfig) and
+# --coverage-threshold (CLI) but does not enforce them, and a failing coverage
+# check must not break plain local test runs. The real gate lives in CI via the
+# `test:coverage` script (bun scripts/coverage.ts check --threshold 90).
+coverage = true
+coverageReporter = ["text", "lcov"]
+coverageInclude = ["src/**/*.ts"]
+coverageExclude = ["src/**/*.test.ts"]

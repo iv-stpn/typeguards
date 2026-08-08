@@ -35,4 +35,6 @@ jobs:
         run: bun run build
 
       - name: Test
-        run: bun run test
+        # test:coverage = bun test (emits V8 coverage) + enforces the 90% line-coverage gate.
+        # Local `bun run test` stays gate-free so coverage never breaks unrelated local runs.
+        run: bun run test:coverage

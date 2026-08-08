@@ -6,6 +6,8 @@ trust boundaries — parsed JSON, webhook payloads, API responses, storage reads
 Each guard lives in its **own file and its own package export**, so bundlers
 only ship the guards you actually import.
 
+[![Coverage](https://img.shields.io/badge/coverage-100%25-2ea44f)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml)
+
 ## Install
 
 ```bash
@@ -91,11 +93,18 @@ take already-typed inputs) and are safe to use on parsed JSON.
 
 ```bash
 bun install
-bun run lint        # biome
-bun run typecheck   # tsc --noEmit
-bun run test        # bun test
-bun run build       # tsup → dist (cjs + esm + dts)
+bun run lint         # biome
+bun run typecheck    # tsc --noEmit
+bun run test         # bun test — emits a V8 coverage report (coverage/lcov.info)
+bun run test:coverage  # test + enforce the ≥90% line-coverage gate (what CI runs)
+bun run badge:coverage # regenerate the README coverage badge from the latest run
+bun run build        # tsup → dist (cjs + esm + dts)
 ```
+
+Coverage is measured with bun's built-in V8 coverage (bunfig.toml); the shields.io
+badge above is generated from `coverage/lcov.info`, so re-run `bun run badge:coverage`
+after meaningful test changes. The coverage gate lives only in CI
+(`test:coverage`) — plain `bun run test` never fails on coverage.
 
 Releasing uses [changesets](https://github.com/changesets/changesets): run
 `bun run changeset`, commit the generated file, and the `Release` workflow
