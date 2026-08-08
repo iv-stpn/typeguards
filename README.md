@@ -45,14 +45,17 @@ function first(raw: unknown): unknown {
 | Import | Narrows to | Checks |
 | --- | --- | --- |
 | `typeguards/is-object` | `Record<string, unknown>` | non-null, non-array object |
+| `typeguards/is-object-of` | `T` | every own property passes its guard in `shape` |
 | `typeguards/is-non-null-object` | `Record<string, unknown>` | any non-null object (arrays included) |
 | `typeguards/is-null` | `null` | `value === null` |
 | `typeguards/is-undefined` | `undefined` | `value === undefined` |
+| `typeguards/is-union-of` | `T[number]` | at least one of `guards` passes |
 | `typeguards/is-string` | `string` | `typeof === 'string'` |
 | `typeguards/is-number` | `number` | `typeof === 'number'` and not `NaN` |
 | `typeguards/is-boolean` | `boolean` | `typeof === 'boolean'` |
 | `typeguards/is-function` | `(...args: never[]) => unknown` | `typeof === 'function'` |
 | `typeguards/is-array` | `T[]` | `Array.isArray` |
+| `typeguards/is-array-of` | `T[]` | every element passes the item guard (sparse arrays rejected) |
 | `typeguards/is-non-empty-array` | `[T, ...T[]]` | array with at least one element |
 | `typeguards/is-empty-array` | `[]` | array with no elements |
 | `typeguards/is-in-array` | `T` | `value` is one of the array's elements |
@@ -66,14 +69,17 @@ take already-typed inputs) and are safe to use on parsed JSON.
 ## API
 
 - `isObject(value)` — `value is Record<string, unknown>`
+- `isObjectOf<T extends Record<string, unknown>>(value, shape)` — `value is T` when every own property passes its guard in `shape`
 - `isNonNullObject(value)` — `value is Record<string, unknown>`
 - `isNull(value)` — `value is null`
 - `isUndefined(value)` — `value is undefined`
+- `isUnionOf<T extends readonly unknown[]>(value, ...guards)` — `value is T[number]` when any guard passes
 - `isString(value)` — `value is string`
 - `isNumber(value)` — `value is number`
 - `isBoolean(value)` — `value is boolean`
 - `isFunction(value)` — `value is (...args: never[]) => unknown`
 - `isArray<T = unknown>(value)` — `value is T[]`
+- `isArrayOf<T>(value, itemGuard)` — `value is T[]` when every element passes `itemGuard`
 - `isNonEmptyArray<T = unknown>(value)` — `value is [T, ...T[]]`
 - `isEmptyArray(value: unknown[])` — `value is []`
 - `isInArray<T>(array: readonly T[], value)` — `value is T`

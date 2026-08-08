@@ -41,6 +41,16 @@
         "default": "./dist/is-object.cjs"
       }
     },
+    "./is-object-of": {
+      "import": {
+        "types": "./dist/is-object-of.d.ts",
+        "default": "./dist/is-object-of.js"
+      },
+      "require": {
+        "types": "./dist/is-object-of.d.cts",
+        "default": "./dist/is-object-of.cjs"
+      }
+    },
     "./is-non-null-object": {
       "import": {
         "types": "./dist/is-non-null-object.d.ts",
@@ -69,6 +79,16 @@
       "require": {
         "types": "./dist/is-undefined.d.cts",
         "default": "./dist/is-undefined.cjs"
+      }
+    },
+    "./is-union-of": {
+      "import": {
+        "types": "./dist/is-union-of.d.ts",
+        "default": "./dist/is-union-of.js"
+      },
+      "require": {
+        "types": "./dist/is-union-of.d.cts",
+        "default": "./dist/is-union-of.cjs"
       }
     },
     "./is-string": {
@@ -129,6 +149,16 @@
       "require": {
         "types": "./dist/is-array.d.cts",
         "default": "./dist/is-array.cjs"
+      }
+    },
+    "./is-array-of": {
+      "import": {
+        "types": "./dist/is-array-of.d.ts",
+        "default": "./dist/is-array-of.js"
+      },
+      "require": {
+        "types": "./dist/is-array-of.d.cts",
+        "default": "./dist/is-array-of.cjs"
       }
     },
     "./is-non-empty-array": {
