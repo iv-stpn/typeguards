@@ -61,6 +61,16 @@
         "default": "./dist/is-non-null-object.cjs"
       }
     },
+    "./is-record": {
+      "import": {
+        "types": "./dist/is-record.d.ts",
+        "default": "./dist/is-record.js"
+      },
+      "require": {
+        "types": "./dist/is-record.d.cts",
+        "default": "./dist/is-record.cjs"
+      }
+    },
     "./is-null": {
       "import": {
         "types": "./dist/is-null.d.ts",
@@ -109,6 +119,26 @@
       "require": {
         "types": "./dist/is-number.d.cts",
         "default": "./dist/is-number.cjs"
+      }
+    },
+    "./is-finite-number": {
+      "import": {
+        "types": "./dist/is-finite-number.d.ts",
+        "default": "./dist/is-finite-number.js"
+      },
+      "require": {
+        "types": "./dist/is-finite-number.d.cts",
+        "default": "./dist/is-finite-number.cjs"
+      }
+    },
+    "./is-integer": {
+      "import": {
+        "types": "./dist/is-integer.d.ts",
+        "default": "./dist/is-integer.js"
+      },
+      "require": {
+        "types": "./dist/is-integer.d.cts",
+        "default": "./dist/is-integer.cjs"
       }
     },
     "./is-boolean": {
@@ -191,6 +221,36 @@
         "default": "./dist/is-in-array.cjs"
       }
     },
+    "./is-one-of": {
+      "import": {
+        "types": "./dist/is-one-of.d.ts",
+        "default": "./dist/is-one-of.js"
+      },
+      "require": {
+        "types": "./dist/is-one-of.d.cts",
+        "default": "./dist/is-one-of.cjs"
+      }
+    },
+    "./is-tuple": {
+      "import": {
+        "types": "./dist/is-tuple.d.ts",
+        "default": "./dist/is-tuple.js"
+      },
+      "require": {
+        "types": "./dist/is-tuple.d.cts",
+        "default": "./dist/is-tuple.cjs"
+      }
+    },
+    "./assert": {
+      "import": {
+        "types": "./dist/assert.d.ts",
+        "default": "./dist/assert.js"
+      },
+      "require": {
+        "types": "./dist/assert.d.cts",
+        "default": "./dist/assert.cjs"
+      }
+    },
     "./assert-defined": {
       "import": {
         "types": "./dist/assert-defined.d.ts",
@@ -199,6 +259,26 @@
       "require": {
         "types": "./dist/assert-defined.d.cts",
         "default": "./dist/assert-defined.cjs"
+      }
+    },
+    "./brand": {
+      "import": {
+        "types": "./dist/brand.d.ts",
+        "default": "./dist/brand.js"
+      },
+      "require": {
+        "types": "./dist/brand.d.cts",
+        "default": "./dist/brand.cjs"
+      }
+    },
+    "./parse": {
+      "import": {
+        "types": "./dist/parse.d.ts",
+        "default": "./dist/parse.js"
+      },
+      "require": {
+        "types": "./dist/parse.d.cts",
+        "default": "./dist/parse.cjs"
       }
     },
     "./is-api-error-response": {

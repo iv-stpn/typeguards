@@ -12,6 +12,39 @@ both from the package root and as a standalone subpath (`typeguards/is-string`, 
 
 ## Type Aliases
 
+### Brand
+
+> **Brand**\<`T`, `B`\> = `T` & `object`
+
+Defined in: [brand.ts:12](https://github.com/iv-stpn/typeguards/blob/main/src/brand.ts#L12)
+
+A nominal brand: `Brand<T, B>` is `T` plus a phantom brand `B` that keeps the type distinct
+from plain `T` at compile time without existing at runtime. Produce values with
+[brandGuard](#brandguard) (or any other guard narrowing to `Brand<T, B>`); the brand key is a
+private symbol, so object literals cannot accidentally satisfy it.
+
+#### Type Declaration
+
+##### \[brand\]
+
+> `readonly` **\[brand\]**: `B`
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+The underlying type being branded (e.g. `string`).
+
+##### B
+
+`B` *extends* `string`
+
+A string literal naming the brand (e.g. `'UserId'`).
+
+***
+
 ### ApiErrorResponse
 
 > **ApiErrorResponse** = `object`
@@ -83,6 +116,102 @@ Nothing — the function either returns `void` or throws.
 #### Throws
 
 When `value` is `null` or `undefined`.
+
+***
+
+### assert()
+
+> **assert**\<`T`\>(`value`, `guard`, `message?`): `asserts value is T`
+
+Defined in: [assert.ts:13](https://github.com/iv-stpn/typeguards/blob/main/src/assert.ts#L13)
+
+Asserts that `value` passes `guard`, narrowing it to the guard's type or throwing. The
+assertion counterpart to [parse](#parse): use it when the narrowed value should keep flowing in
+the existing variable rather than be returned.
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+The type `guard` narrows to; `value` is narrowed to it on success.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+##### guard
+
+(`item`) => `item is T`
+
+A type guard that `value` must pass.
+
+##### message?
+
+`string`
+
+Optional error message used when the assertion fails.
+
+#### Returns
+
+`asserts value is T`
+
+Nothing — the function either returns `void` or throws.
+
+#### Throws
+
+When `value` fails `guard`.
+
+***
+
+### brandGuard()
+
+> **brandGuard**\<`T`, `B`\>(`guard`, `_brandName`): (`value`) => `value is Brand<T, B>`
+
+Defined in: [brand.ts:25](https://github.com/iv-stpn/typeguards/blob/main/src/brand.ts#L25)
+
+Wraps `guard` so that passing values narrow to `Brand<T, B>` instead of `T` — the standard way
+to give a runtime guard a nominal brand. The brand name argument only supplies the brand at
+the type level; the returned guard behaves exactly like `guard`.
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+The underlying type of the brand.
+
+##### B
+
+`B` *extends* `string`
+
+The brand name as a string literal type.
+
+#### Parameters
+
+##### guard
+
+(`item`) => `item is T`
+
+The base type guard whose passes are branded.
+
+##### \_brandName
+
+`B`
+
+The brand name; its literal type becomes `B` (compile-time only).
+
+#### Returns
+
+A type guard narrowing `unknown` to `Brand<T, B>`.
+
+(`value`) => `value is Brand<T, B>`
 
 ***
 
@@ -276,6 +405,32 @@ The array to check.
 
 ***
 
+### isFiniteNumber()
+
+> **isFiniteNumber**(`value`): `value is number`
+
+Defined in: [is-finite-number.ts:9](https://github.com/iv-stpn/typeguards/blob/main/src/is-finite-number.ts#L9)
+
+Narrows `unknown` to a finite `number`, excluding `NaN` and `±Infinity`. Use when downstream
+arithmetic or serialization must never see non-finite values; [isNumber](#isnumber) rejects `NaN`
+but still accepts `±Infinity`.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+#### Returns
+
+`value is number`
+
+`true` when `value` is a finite number; narrows `value` to `number`.
+
+***
+
 ### isFunction()
 
 > **isFunction**(`value`): `value is (args: never[]) => unknown`
@@ -336,6 +491,33 @@ The value to look for.
 `value is T`
 
 `true` when `array` contains `value` (strict equality), narrowing `value` to `T`.
+
+***
+
+### isInteger()
+
+> **isInteger**(`value`): `value is number`
+
+Defined in: [is-integer.ts:10](https://github.com/iv-stpn/typeguards/blob/main/src/is-integer.ts#L10)
+
+Narrows `unknown` to an integer `number` — a type-guard replacement for `Number.isInteger`.
+Rejects `NaN`, `±Infinity`, and fractional values; `-0` passes because it is equal to `0`.
+The narrowed type is still `number` (there is no integer type), so pair with a brand
+([brandGuard](#brandguard)) when callers must rely on integer semantics.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+#### Returns
+
+`value is number`
+
+`true` when `value` is a number with no fractional part; narrows `value` to `number`.
 
 ***
 
@@ -516,6 +698,74 @@ The value to check.
 
 ***
 
+### isOneOf()
+
+> **isOneOf**\<`T`\>(`value`, ...`options`): `value is T[number]`
+
+Defined in: [is-one-of.ts:11](https://github.com/iv-stpn/typeguards/blob/main/src/is-one-of.ts#L11)
+
+Narrows `unknown` to one of the literal `options` — true when `value` is strictly equal to any
+of them. The variadic counterpart to [isInArray](#isinarray) for inline literal unions (`'GET' |
+'POST' | ...`); prefer `isInArray` when the options already live in an `as const` array.
+
+#### Type Parameters
+
+##### T
+
+`T` *extends* readonly `unknown`[]
+
+The tuple of literal options; the result type is `T[number]`.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+##### options
+
+...`T`
+
+The literal values `value` is compared against (strict equality).
+
+#### Returns
+
+`value is T[number]`
+
+`true` when `value` equals one of `options`; narrows `value` to `T[number]`.
+
+***
+
+### isRecord()
+
+> **isRecord**(`value`): `value is Record<string, unknown>`
+
+Defined in: [is-record.ts:11](https://github.com/iv-stpn/typeguards/blob/main/src/is-record.ts#L11)
+
+Narrows `unknown` to a plain object — one whose prototype is `Object.prototype` or `null`.
+Unlike [isObject](#isobject), this rejects class instances, `Date`, `Map`, and other exotic objects,
+so it is the safe choice for JSON-shaped data where a custom prototype is suspicious. Arrays
+are rejected, and the check is realm-independent (works for values from iframes or workers).
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+#### Returns
+
+`value is Record<string, unknown>`
+
+`true` when `value` is a plain, non-array object; narrows `value` to
+  `Record<string, unknown>`.
+
+***
+
 ### isString()
 
 > **isString**(`value`): `value is string`
@@ -537,6 +787,49 @@ The value to check.
 `value is string`
 
 `true` when `typeof value === 'string'`; narrows `value` to `string`.
+
+***
+
+### isTuple()
+
+> **isTuple**\<`T`\>(`value`, ...`guards`): `value is T`
+
+Defined in: [is-tuple.ts:14](https://github.com/iv-stpn/typeguards/blob/main/src/is-tuple.ts#L14)
+
+Narrows `unknown` to a tuple of the types guarded by `guards` — true when `value` is an array
+whose length exactly matches the number of guards and every element passes its positional
+guard. Extra or missing elements are rejected, so this is the strict counterpart to
+[isArrayOf](#isarrayof) for fixed-length arrays (parsed coordinates, version tuples).
+
+#### Type Parameters
+
+##### T
+
+`T` *extends* readonly `unknown`[]
+
+The tuple type described by `guards`; each position maps to the type its guard
+  narrows to.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+##### guards
+
+...\{ \[K in string \| number \| symbol\]: (item: unknown) =\> item is T\[K\] \}
+
+One type guard per tuple position, applied in order.
+
+#### Returns
+
+`value is T`
+
+`true` when `value` is an array whose length equals `guards.length` and each element
+  passes the guard at its index; narrows `value` to `T`.
 
 ***
 
@@ -602,3 +895,53 @@ One or more type guards; the value passes when any guard passes.
 
 `true` when at least one guard in `guards` passes for `value`; narrows `value` to the
   union of the guards' types.
+
+***
+
+### parse()
+
+> **parse**\<`T`\>(`value`, `guard`, `message?`): `T`
+
+Defined in: [parse.ts:13](https://github.com/iv-stpn/typeguards/blob/main/src/parse.ts#L13)
+
+Runs `guard` on `value` and returns the narrowed value, throwing when it fails. The returning
+counterpart to [assert](#assert): use it to extract a trusted value from an `unknown` at a trust
+boundary in one expression (`const user = parse(raw, isUserShape)`).
+
+#### Type Parameters
+
+##### T
+
+`T`
+
+The type `guard` narrows to; the returned value has this type.
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+The value to check.
+
+##### guard
+
+(`item`) => `item is T`
+
+A type guard that `value` must pass.
+
+##### message?
+
+`string`
+
+Optional error message used when the guard fails.
+
+#### Returns
+
+`T`
+
+`value`, narrowed to `T`.
+
+#### Throws
+
+When `value` fails `guard`.

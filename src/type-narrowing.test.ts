@@ -4,25 +4,34 @@
  * barrel/declaration regressions that make guards degrade to `boolean`.
  */
 import { describe, expect, test } from 'bun:test';
+import type { Brand } from './index';
 import {
+  assert,
   assertDefined,
+  brandGuard,
   hasKey,
   isApiErrorResponse,
   isArray,
   isArrayOf,
   isBoolean,
   isEmptyArray,
+  isFiniteNumber,
   isFunction,
   isInArray,
+  isInteger,
   isNonEmptyArray,
   isNonNullObject,
   isNull,
   isNumber,
   isObject,
   isObjectOf,
+  isOneOf,
+  isRecord,
   isString,
+  isTuple,
   isUndefined,
   isUnionOf,
+  parse,
 } from './index';
 
 describe('type-level narrowing', () => {
@@ -129,6 +138,74 @@ describe('type-level narrowing', () => {
     assertDefined(value);
     const narrowed: string = value;
     expect(narrowed).toBe('defined');
+  });
+
+  test('isInteger and isFiniteNumber narrow to number', () => {
+    const integerValue: unknown = 3;
+    if (isInteger(integerValue)) {
+      const narrowed: number = integerValue;
+      expect(narrowed).toBe(3);
+    }
+    const finiteValue: unknown = 3.5;
+    if (isFiniteNumber(finiteValue)) {
+      const narrowed: number = finiteValue;
+      expect(narrowed).toBe(3.5);
+    }
+  });
+
+  test('isRecord narrows to Record<string, unknown>', () => {
+    const value: unknown = { a: 1 };
+    if (isRecord(value)) {
+      const narrowed: Record<string, unknown> = value;
+      expect(narrowed.a).toBe(1);
+    }
+  });
+
+  test('isOneOf narrows to the literal union of options', () => {
+    const value: unknown = 'a';
+    if (isOneOf(value, 'a', 'b')) {
+      const narrowed: 'a' | 'b' = value;
+      expect(narrowed).toBe('a');
+      // @ts-expect-error isOneOf narrows to 'a' | 'b', not 'a'
+      const onlyA: 'a' = value;
+      expect(onlyA).toBe('a');
+    }
+  });
+
+  test('isTuple narrows to the positional tuple type', () => {
+    const value: unknown = [1, 'a'];
+    if (isTuple(value, isNumber, isString)) {
+      const narrowed: [number, string] = value;
+      expect(narrowed[0]).toBe(1);
+      // @ts-expect-error isTuple narrows to [number, string], not [number, number]
+      const wrongPair: [number, number] = value;
+      expect(wrongPair).toBeDefined();
+    }
+  });
+
+  test('assert narrows the variable in place', () => {
+    const value: unknown = 'x';
+    assert(value, isString);
+    const narrowed: string = value;
+    expect(narrowed).toBe('x');
+  });
+
+  test('parse returns the guard-narrowed type', () => {
+    const seven: unknown = 7;
+    const parsed: number = parse(seven, isNumber);
+    expect(parsed).toBe(7);
+  });
+
+  test('brandGuard narrows to a nominal brand', () => {
+    const isUserId = brandGuard(isString, 'UserId');
+    const value: unknown = 'u_1';
+    if (isUserId(value)) {
+      const narrowed: Brand<string, 'UserId'> = value;
+      expect(narrowed).toBeTypeOf('string');
+      // @ts-expect-error Brand<string, 'UserId'> is not assignable to Brand<string, 'OrderId'>
+      const otherBrand: Brand<string, 'OrderId'> = value;
+      expect(otherBrand).toBeDefined();
+    }
   });
 });
 
