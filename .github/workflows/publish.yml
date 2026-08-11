@@ -92,6 +92,9 @@ jobs:
             echo "already-published=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Upgrade npm (OIDC trusted publishing requires npm >= 11.15)
+        run: npm install -g npm@latest
+
       - name: Publish to npm
         if: steps.check.outputs.already-published == 'false'
         # Trusted publishing via OIDC: the workflow's id-token: write permission
