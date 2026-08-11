@@ -89,6 +89,16 @@ function first(raw: unknown): unknown {
 All guards accept `unknown` (except `isEmptyArray`/`isInArray`/`hasKey`, which
 take already-typed inputs) and are safe to use on parsed JSON.
 
+## Utilities
+
+Generic helpers that pair with the guards — no narrowing, but the same
+one-file-per-export, tree-shakeable layout.
+
+| Import | Returns | Behaviour |
+| --- | --- | --- |
+| `typeguards/object-keys` | `(keyof T)[]` | typed `Object.keys` — own enumerable string keys, without the `string[]` cast callers would otherwise need |
+| `typeguards/create-empty-record` | `Record<K, V>` | fresh prototype-less record (`Object.create(null)`) — safe initial value when building a map from untrusted keys |
+
 ## Development
 
 ```bash
@@ -140,6 +150,8 @@ Full API reference: [docs/api.md](docs/api.md).
 - `assert<T>(value, guard, message?)` — `asserts value is T`; throws when `guard` fails
 - `parse<T>(value, guard, message?)` — returns the narrowed `T` or throws when `guard` fails
 - `brandGuard<T, B extends string>(guard, brandName)` — `(value: unknown) => value is Brand<T, B>`
+- `createEmptyRecord<K extends PropertyKey, V>()` — returns a prototype-less empty `Record<K, V>` (`Object.create(null)`), immune to `__proto__` pollution
+- `objectKeys<T extends object>(obj)` — `(keyof T)[]`, a typed wrapper around `Object.keys`
 
 ## License
 
