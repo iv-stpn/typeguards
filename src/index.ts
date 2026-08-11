@@ -3,9 +3,9 @@
  *
  * Narrow unknown values at trust boundaries (parsed JSON, webhook payloads, API responses) with
  * composable, tree-shakeable type predicates. Each guard lives in its own module and is exported
- * both from the package root and as a standalone subpath (`ts-typeguards/is-string`, etc.).
+ * both from the package root and as a standalone subpath (`@iv-stpn/typeguards/is-string`, etc.).
  *
- * @module ts-typeguards
+ * @module typeguards
  */
 // biome-ignore-all lint/performance/noBarrelFile: intentional — this is the single public surface of the package.
 export { assert } from './assert.js';

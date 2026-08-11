@@ -1,14 +1,14 @@
-**ts-typeguards v0.0.0**
+**@iv-stpn/typeguards v0.0.0**
 
 ***
 
-# ts-typeguards v0.0.0
+# @iv-stpn/typeguards v0.0.0
 
 Zero-dependency runtime type guards for TypeScript.
 
 Narrow unknown values at trust boundaries (parsed JSON, webhook payloads, API responses) with
 composable, tree-shakeable type predicates. Each guard lives in its own module and is exported
-both from the package root and as a standalone subpath (`ts-typeguards/is-string`, etc.).
+both from the package root and as a standalone subpath (`@iv-stpn/typeguards/is-string`, etc.).
 
 ## Type Aliases
 
