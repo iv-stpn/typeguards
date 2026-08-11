@@ -1,6 +1,6 @@
 {
   "name": "@iv-stpn/typeguards",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Zero-dependency runtime type guards for TypeScript. Narrow unknown values at trust boundaries (parsed JSON, webhook payloads, API responses) — one guard per file, maximum tree-shaking.",
   "keywords": [
     "typeguard",
