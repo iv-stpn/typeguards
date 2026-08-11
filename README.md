@@ -1,12 +1,12 @@
-# typeguards
+# ts-typeguards
 
-[![CI](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml/badge.svg)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml) [![Coverage](https://img.shields.io/badge/coverage-100%25-2ea44f)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml) [![npm version](https://img.shields.io/npm/v/typeguards)](https://www.npmjs.com/package/typeguards)
+[![CI](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml/badge.svg)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml) [![Coverage](https://img.shields.io/badge/coverage-100%25-2ea44f)](https://github.com/iv-stpn/typeguards/actions/workflows/ci.yml) [![npm version](https://img.shields.io/npm/v/ts-typeguards)](https://www.npmjs.com/package/ts-typeguards)
 
 Zero-dependency runtime type guards for TypeScript. Narrow `unknown` values at
 trust boundaries — parsed JSON, webhook payloads, API responses, storage reads.
 
 ```ts
-import { isObjectOf, isString, isNumber } from 'typeguards';
+import { isObjectOf, isString, isNumber } from 'ts-typeguards';
 
 function parseUser(raw: unknown) {
   // `raw` could be anything — prove it before you trust it
@@ -24,18 +24,18 @@ only ship the guards you actually import.
 ## Install
 
 ```bash
-bun add typeguards
+bun add ts-typeguards
 # or
-npm install typeguards
+npm install ts-typeguards
 ```
 
 ## Usage
 
 ```ts
-import { isObject, isString } from 'typeguards';
+import { isObject, isString } from 'ts-typeguards';
 // or import only what you use, per guard:
-import { isObject } from 'typeguards/is-object';
-import { isString } from 'typeguards/is-string';
+import { isObject } from 'ts-typeguards/is-object';
+import { isString } from 'ts-typeguards/is-string';
 
 function parseConfig(raw: unknown) {
   if (!isObject(raw)) throw new Error('expected an object');
@@ -47,7 +47,7 @@ function parseConfig(raw: unknown) {
 Type guards narrow the value in the `if` branch:
 
 ```ts
-import { isNonEmptyArray } from 'typeguards';
+import { isNonEmptyArray } from 'ts-typeguards';
 
 function first(raw: unknown): unknown {
   if (!isNonEmptyArray(raw)) throw new Error('expected a non-empty array');
@@ -59,32 +59,32 @@ function first(raw: unknown): unknown {
 
 | Import | Narrows to | Checks |
 | --- | --- | --- |
-| `typeguards/is-object` | `Record<string, unknown>` | non-null, non-array object |
-| `typeguards/is-object-of` | `T` | every own property passes its guard in `shape` |
-| `typeguards/is-non-null-object` | `Record<string, unknown>` | any non-null object (arrays included) |
-| `typeguards/is-record` | `Record<string, unknown>` | plain object (prototype `Object.prototype` or `null`); class instances rejected |
-| `typeguards/is-null` | `null` | `value === null` |
-| `typeguards/is-undefined` | `undefined` | `value === undefined` |
-| `typeguards/is-union-of` | `T[number]` | at least one of `guards` passes |
-| `typeguards/is-string` | `string` | `typeof === 'string'` |
-| `typeguards/is-number` | `number` | `typeof === 'number'` and not `NaN` |
-| `typeguards/is-finite-number` | `number` | `typeof === 'number'`, not `NaN`, not `±Infinity` |
-| `typeguards/is-integer` | `number` | `Number.isInteger` |
-| `typeguards/is-boolean` | `boolean` | `typeof === 'boolean'` |
-| `typeguards/is-function` | `(...args: never[]) => unknown` | `typeof === 'function'` |
-| `typeguards/is-array` | `T[]` | `Array.isArray` |
-| `typeguards/is-array-of` | `T[]` | every element passes the item guard (sparse arrays rejected) |
-| `typeguards/is-non-empty-array` | `[T, ...T[]]` | array with at least one element |
-| `typeguards/is-empty-array` | `[]` | array with no elements |
-| `typeguards/is-in-array` | `T` | `value` is one of the array's elements |
-| `typeguards/is-one-of` | `T[number]` | `value` strictly equals one of the literal `options` |
-| `typeguards/is-tuple` | `T` | array length matches `guards`; each element passes its positional guard |
-| `typeguards/has-key` | `Record<K, unknown>` | `key` is an own property of `value` |
-| `typeguards/is-api-error-response` | `ApiErrorResponse` | `{ error: string; code?: string; requestId?: string }` |
-| `typeguards/assert-defined` | `NonNullable<T>` (asserts) | throws if `value` is `null`/`undefined` |
-| `typeguards/assert` | `T` (asserts) | throws if `value` fails `guard` |
-| `typeguards/parse` | `T` | returns the narrowed value or throws if `guard` fails |
-| `typeguards/brand` | `Brand<T, B>` | `brandGuard(guard, 'Name')` narrows to a nominal brand |
+| `ts-typeguards/is-object` | `Record<string, unknown>` | non-null, non-array object |
+| `ts-typeguards/is-object-of` | `T` | every own property passes its guard in `shape` |
+| `ts-typeguards/is-non-null-object` | `Record<string, unknown>` | any non-null object (arrays included) |
+| `ts-typeguards/is-record` | `Record<string, unknown>` | plain object (prototype `Object.prototype` or `null`); class instances rejected |
+| `ts-typeguards/is-null` | `null` | `value === null` |
+| `ts-typeguards/is-undefined` | `undefined` | `value === undefined` |
+| `ts-typeguards/is-union-of` | `T[number]` | at least one of `guards` passes |
+| `ts-typeguards/is-string` | `string` | `typeof === 'string'` |
+| `ts-typeguards/is-number` | `number` | `typeof === 'number'` and not `NaN` |
+| `ts-typeguards/is-finite-number` | `number` | `typeof === 'number'`, not `NaN`, not `±Infinity` |
+| `ts-typeguards/is-integer` | `number` | `Number.isInteger` |
+| `ts-typeguards/is-boolean` | `boolean` | `typeof === 'boolean'` |
+| `ts-typeguards/is-function` | `(...args: never[]) => unknown` | `typeof === 'function'` |
+| `ts-typeguards/is-array` | `T[]` | `Array.isArray` |
+| `ts-typeguards/is-array-of` | `T[]` | every element passes the item guard (sparse arrays rejected) |
+| `ts-typeguards/is-non-empty-array` | `[T, ...T[]]` | array with at least one element |
+| `ts-typeguards/is-empty-array` | `[]` | array with no elements |
+| `ts-typeguards/is-in-array` | `T` | `value` is one of the array's elements |
+| `ts-typeguards/is-one-of` | `T[number]` | `value` strictly equals one of the literal `options` |
+| `ts-typeguards/is-tuple` | `T` | array length matches `guards`; each element passes its positional guard |
+| `ts-typeguards/has-key` | `Record<K, unknown>` | `key` is an own property of `value` |
+| `ts-typeguards/is-api-error-response` | `ApiErrorResponse` | `{ error: string; code?: string; requestId?: string }` |
+| `ts-typeguards/assert-defined` | `NonNullable<T>` (asserts) | throws if `value` is `null`/`undefined` |
+| `ts-typeguards/assert` | `T` (asserts) | throws if `value` fails `guard` |
+| `ts-typeguards/parse` | `T` | returns the narrowed value or throws if `guard` fails |
+| `ts-typeguards/brand` | `Brand<T, B>` | `brandGuard(guard, 'Name')` narrows to a nominal brand |
 
 All guards accept `unknown` (except `isEmptyArray`/`isInArray`/`hasKey`, which
 take already-typed inputs) and are safe to use on parsed JSON.
@@ -96,8 +96,8 @@ one-file-per-export, tree-shakeable layout.
 
 | Import | Returns | Behaviour |
 | --- | --- | --- |
-| `typeguards/object-keys` | `(keyof T)[]` | typed `Object.keys` — own enumerable string keys, without the `string[]` cast callers would otherwise need |
-| `typeguards/create-empty-record` | `Record<K, V>` | fresh prototype-less record (`Object.create(null)`) — safe initial value when building a map from untrusted keys |
+| `ts-typeguards/object-keys` | `(keyof T)[]` | typed `Object.keys` — own enumerable string keys, without the `string[]` cast callers would otherwise need |
+| `ts-typeguards/create-empty-record` | `Record<K, V>` | fresh prototype-less record (`Object.create(null)`) — safe initial value when building a map from untrusted keys |
 
 ## Development
 

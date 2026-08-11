@@ -1,14 +1,14 @@
-**typeguards v0.0.0**
+**ts-typeguards v0.0.0**
 
 ***
 
-# typeguards v0.0.0
+# ts-typeguards v0.0.0
 
 Zero-dependency runtime type guards for TypeScript.
 
 Narrow unknown values at trust boundaries (parsed JSON, webhook payloads, API responses) with
 composable, tree-shakeable type predicates. Each guard lives in its own module and is exported
-both from the package root and as a standalone subpath (`typeguards/is-string`, etc.).
+both from the package root and as a standalone subpath (`ts-typeguards/is-string`, etc.).
 
 ## Type Aliases
 
@@ -212,6 +212,38 @@ The brand name; its literal type becomes `B` (compile-time only).
 A type guard narrowing `unknown` to `Brand<T, B>`.
 
 (`value`) => `value is Brand<T, B>`
+
+***
+
+### createEmptyRecord()
+
+> **createEmptyRecord**\<`K`, `V`\>(): `Record`\<`K`, `V`\>
+
+Defined in: [create-empty-record.ts:10](https://github.com/iv-stpn/typeguards/blob/main/src/create-empty-record.ts#L10)
+
+Creates an empty record backed by a prototype-less object (`Object.create(null)`). Unlike a
+plain `{}`, a key of `"__proto__"` cannot pollute the prototype chain, and the result has no
+inherited members — the safe initial value when building a `Record<K, V>` from untrusted keys.
+
+#### Type Parameters
+
+##### K
+
+`K` *extends* `PropertyKey`
+
+The key type of the record; usually `string`.
+
+##### V
+
+`V`
+
+The value type of the record.
+
+#### Returns
+
+`Record`\<`K`, `V`\>
+
+A new, empty `Record<K, V>` whose prototype is `null`.
 
 ***
 
@@ -895,6 +927,40 @@ One or more type guards; the value passes when any guard passes.
 
 `true` when at least one guard in `guards` passes for `value`; narrows `value` to the
   union of the guards' types.
+
+***
+
+### objectKeys()
+
+> **objectKeys**\<`T`\>(`obj`): keyof `T`[]
+
+Defined in: [object-keys.ts:10](https://github.com/iv-stpn/typeguards/blob/main/src/object-keys.ts#L10)
+
+Typed wrapper around `Object.keys()`. The TS standard library types `Object.keys` as returning
+`string[]` even though the keys of a known object are known at compile time. This wrapper
+re-asserts the narrower key type so callers don't need inline casts.
+
+#### Type Parameters
+
+##### T
+
+`T` *extends* `object`
+
+The object type whose keys are enumerated.
+
+#### Parameters
+
+##### obj
+
+`T`
+
+The object to inspect.
+
+#### Returns
+
+keyof `T`[]
+
+The own enumerable string keys of `obj`, typed as `(keyof T)[]`.
 
 ***
 

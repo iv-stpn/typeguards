@@ -1,5 +1,5 @@
 ---
-"typeguards": patch
+"ts-typeguards": patch
 ---
 
 Add the next layer of guards and helpers, all exported from the root and as standalone subpaths:

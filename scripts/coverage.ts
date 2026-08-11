@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Coverage helper for typeguards.
+ * Coverage helper for ts-typeguards.
  *
  * `bun test` is configured (bunfig.toml) to emit V8 coverage on every run and
  * write an lcov report to coverage/lcov.info. This script turns that data into
