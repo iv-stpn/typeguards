@@ -50,11 +50,10 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Setup Node (npm registry auth)
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -95,6 +94,7 @@ jobs:
 
       - name: Publish to npm
         if: steps.check.outputs.already-published == 'false'
+        # Trusted publishing via OIDC: the workflow's id-token: write permission
+        # (declared above) lets npm exchange the GitHub Actions OIDC identity for
+        # a publish grant — no NPM_TOKEN secret exists for this repo.
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
