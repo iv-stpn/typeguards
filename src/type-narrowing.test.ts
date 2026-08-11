@@ -9,6 +9,7 @@ import {
   assert,
   assertDefined,
   brandGuard,
+  createEmptyRecord,
   hasKey,
   isApiErrorResponse,
   isArray,
@@ -31,6 +32,7 @@ import {
   isTuple,
   isUndefined,
   isUnionOf,
+  objectKeys,
   parse,
 } from './index';
 
@@ -206,6 +208,23 @@ describe('type-level narrowing', () => {
       const otherBrand: Brand<string, 'OrderId'> = value;
       expect(otherBrand).toBeDefined();
     }
+  });
+
+  test('objectKeys returns keyof-typed keys', () => {
+    const keys: ('a' | 'b')[] = objectKeys({ a: 1, b: 'x' });
+    expect(keys).toEqual(['a', 'b']);
+    // @ts-expect-error objectKeys narrows to (keyof T)[], not a single literal key
+    const onlyA: 'a'[] = objectKeys({ a: 1, b: 2 });
+    expect(onlyA).toBeDefined();
+  });
+
+  test('createEmptyRecord returns a Record<K, V>', () => {
+    const record: Record<string, number> = createEmptyRecord<string, number>();
+    record.answer = 42;
+    expect(record.answer).toBe(42);
+    // @ts-expect-error createEmptyRecord is generic in its value type
+    const wrongValue: Record<string, string> = createEmptyRecord<string, number>();
+    expect(wrongValue).toBeDefined();
   });
 });
 

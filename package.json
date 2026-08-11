@@ -271,6 +271,16 @@
         "default": "./dist/brand.cjs"
       }
     },
+    "./create-empty-record": {
+      "import": {
+        "types": "./dist/create-empty-record.d.ts",
+        "default": "./dist/create-empty-record.js"
+      },
+      "require": {
+        "types": "./dist/create-empty-record.d.cts",
+        "default": "./dist/create-empty-record.cjs"
+      }
+    },
     "./parse": {
       "import": {
         "types": "./dist/parse.d.ts",
@@ -279,6 +289,16 @@
       "require": {
         "types": "./dist/parse.d.cts",
         "default": "./dist/parse.cjs"
+      }
+    },
+    "./object-keys": {
+      "import": {
+        "types": "./dist/object-keys.d.ts",
+        "default": "./dist/object-keys.js"
+      },
+      "require": {
+        "types": "./dist/object-keys.d.cts",
+        "default": "./dist/object-keys.cjs"
       }
     },
     "./is-api-error-response": {
